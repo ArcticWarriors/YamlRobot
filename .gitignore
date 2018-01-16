@@ -12,3 +12,13 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+/bin/
+
+.settings
+temp/
+
+simulator_config/joystick_config.properties
+simulator_config/networktables.ini.bak
+
+.project
+.classpath

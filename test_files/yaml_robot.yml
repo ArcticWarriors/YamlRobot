@@ -1,0 +1,7 @@
+example_key    : example_value
+example_double : 0.0
+example_map:
+   sub_key: sub_value
+example_list:
+- list_thing0
+- list_thing1

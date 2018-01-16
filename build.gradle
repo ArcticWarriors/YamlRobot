@@ -1,0 +1,72 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+plugins {
+    id "java"
+    id "eclipse"
+    id "idea"
+    id "jacoco"
+    id "jaci.openrio.gradle.GradleRIO" version "2018.01.07"
+    id "com.snobot.simulator.plugin.SnobotSimulatorPlugin" version "2018.01.10"
+}
+
+apply plugin: com.snobot.simulator.plugin.SnobotSimulatorPlugin
+snobotSimVersions {
+    snobotSimVersion = "0.7.2"
+}
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src"]
+        }
+    }
+}
+
+configurations {
+    native3rdPartyDeps
+    testRuntime.extendsFrom(native3rdPartyDeps)
+}
+
+dependencies {
+
+    // GradleRIO
+    compile wpilib()
+    
+    // Simulator
+    testCompile snobotSimCompile()
+    testCompile snobotSimJavaCompile()
+    
+    // 3rd Party
+    compile 'org.yaml:snakeyaml:1.18'
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.2.1'
+}
+
+// SnobotSim
+build.dependsOn snobotSimUnzipNativeTools
+
+eclipse.classpath.file {
+    withXml {
+        provider ->
+        provider.asNode().findAll { it.@path.contains("jinput") && !it.@path.contains("natives") }.each {
+                def container = it
+                container.appendNode('attributes').appendNode('attribute', [name: 'org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY', value:project.name + "/build/native_libs"])
+        }
+    }
+}
