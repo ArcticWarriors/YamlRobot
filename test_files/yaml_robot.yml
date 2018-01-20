@@ -1,7 +1,11 @@
-example_key    : example_value
-example_double : 0.0
-example_map:
-   sub_key: sub_value
-example_list:
-- list_thing0
-- list_thing1
+
+config:
+- type            : MomentarySolenoid
+  joystick_number : 0
+  button_number   : 4
+  solenoid_port   : 0
+  
+- type            : MomentarySolenoid
+  joystick_number : 0
+  button_number   : 1
+  solenoid_port   : 4
