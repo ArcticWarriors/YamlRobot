@@ -5,10 +5,9 @@ import edu.wpi.first.wpilibj.SpeedController;
 
 public class MatchMotorJoystick implements IYamlUpdater
 {
-
-	private Joystick mJoystick;
-	private SpeedController mSpeedController;
-	int mAxisNumber;
+    private Joystick mJoystick;
+    private SpeedController mSpeedController;
+    int mAxisNumber;
 	
     public void update()
 	{

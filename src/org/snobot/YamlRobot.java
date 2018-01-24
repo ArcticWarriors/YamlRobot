@@ -36,17 +36,7 @@ public class YamlRobot extends IterativeRobot
 
     private List<IYamlUpdater> mUpdaters;
     private Joystick mJoystick;
-    //
-    // private IYamlUpdater solenoid1;
-    // private IYamlUpdater solenoid2;
-    // private IYamlUpdater mMotor1;
-    // private IYamlUpdater mMotor2;
 
-
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
     public void robotInit()
     {
         mUpdaters = new ArrayList<>();
@@ -81,25 +71,11 @@ public class YamlRobot extends IterativeRobot
                     System.err.println("Unknown type " + type);
                 }
             }
-
-            // System.out.println(config);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        
-        // Joystick joystick = new Joystick(0);
-        // Solenoid sol1 = new Solenoid(0);
-        // Solenoid sol2 = new Solenoid(1);
-        // Victor mot1 = new Victor(1);
-        // Victor mot2 = new Victor(2);
-        //
-
-        // mUpdaters.add(new MomentarySolenoid(joystick, sol1, 3));
-        // mUpdaters.add(new MomentarySolenoid(joystick, sol2, 6));
-        // mUpdaters.add(new MotorWithButton(joystick, mot1, 4, -.5));
-        // mUpdaters.add(new MotorWithButton(joystick, mot2, 7, .3));
     }
 
     private void parseMomentarySolenoid(Map<String, Object> aConfig)
@@ -132,7 +108,6 @@ public class YamlRobot extends IterativeRobot
         mUpdaters.add(new MatchMotorJoystick(mJoystick, motor, axisNumber));
     }
 
-
     public void autonomousInit()
     {
 
@@ -143,22 +118,12 @@ public class YamlRobot extends IterativeRobot
 
     }
 
-    /**
-     * This function is called periodically during operator control
-     */
     public void teleopPeriodic()
     {
-        // System.out.print("TELE");
         for (IYamlUpdater updater : mUpdaters)
         {
             updater.update();
         }
-        // System.out.println();
-        // solenoid1.update();
-        // solenoid2.update();
-        // mMotor1.update();
-        // mMotor2.update()
-
     }
 
     public SpeedController createSpeedController(String aMotorType, int aMotorPort)
@@ -188,4 +153,3 @@ public class YamlRobot extends IterativeRobot
         return speedController;
     }
 }
-

@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class MomentarySolenoid implements IYamlUpdater
 {
-	
 	private Joystick mJoystick1;
 	private Solenoid mSolenoid;
 	private int mButtonNumber;
