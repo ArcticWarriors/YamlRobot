@@ -12,7 +12,7 @@ plugins {
     id "eclipse"
     id "idea"
     id "jacoco"
-    id "jaci.openrio.gradle.GradleRIO" version "2018.01.07"
+    id "jaci.openrio.gradle.GradleRIO" version "2018.01.21"
     id "com.snobot.simulator.plugin.SnobotSimulatorPlugin" version "2018.01.10"
 }
 
@@ -20,6 +20,35 @@ apply plugin: com.snobot.simulator.plugin.SnobotSimulatorPlugin
 snobotSimVersions {
     snobotSimVersion = "0.7.2"
 }
+
+wpi {
+    wpilibVersion = '2018.2.1'
+    shuffleboardVersion = '1.1.0'
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+// GradleRIO setup
+/////////////////////////////////////////////////////////////////////////////////
+
+def TEAM = 174
+def ROBOT_CLASS = "org.snobot.YamlRobot"
+
+// Define my targets (RoboRIO) and artifacts (deployable files)
+// This is added by GradleRIO's backing project EmbeddedTools.
+deploy {
+    targets {
+        target("roborio", jaci.openrio.gradle.frc.RoboRIO) {
+            team = TEAM
+        }
+    }
+    artifacts {
+        artifact('frcJava', jaci.openrio.gradle.frc.FRCJavaArtifact) {
+            targets << "roborio"
+        }
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////
 
 
 repositories {
@@ -54,6 +83,12 @@ dependencies {
 }
 
 
+// GradleRIO setup.  Must be after dependencies
+jar {
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    manifest jaci.openrio.gradle.GradleRIOPlugin.javaManifest(ROBOT_CLASS)
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '4.2.1'
 }
@@ -69,4 +104,8 @@ eclipse.classpath.file {
                 container.appendNode('attributes').appendNode('attribute', [name: 'org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY', value:project.name + "/build/native_libs"])
         }
     }
+}
+
+tasks.withType(Test) {
+    systemProperty "java.library.path", "$rootDir/build/native_libs"
 }
